@@ -1,0 +1,9 @@
+<resources>
+
+
+    <string name="error_charging_list"> Error charging pokemons</string>
+
+    <string name="retry"> retry</string>
+
+    <string name="error_charging_detail"> Details could not be loaded.</string>
+</resources>

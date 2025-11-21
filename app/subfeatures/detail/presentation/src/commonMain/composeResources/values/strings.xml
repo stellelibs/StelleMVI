@@ -1,0 +1,13 @@
+<resources>
+
+    <string name="images">images</string>
+    <string name="image">image</string>
+    <string name="height">height</string>
+    <string name="back">back</string>
+    <string name="weight">weight</string>
+    <string name="retry"> retry</string>
+
+    <string name="error_charging_detail"> Details could not be loaded.</string>
+
+
+</resources>
