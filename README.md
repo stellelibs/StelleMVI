@@ -21,7 +21,19 @@ StelleMVI structures your application around:
 - **Reducer** – pure functions that update the state
 - **State** – the single source of truth
 - **Effect / Side-Effect** – ephemeral actions such as navigation or IO
-- **Store** – (called here viewmodel)the engine that binds everything together
+- **Store** – (divided in viewmodel and data) the engine that binds everything together
+
+## Library Modules
+
+StelleMVI is organized into several modules so you only include what you need.
+
+- **`mvi`**: The core of the architecture. Contains `StelleViewModel`, `StelleState`, etc.
+- **`mvi-compose`**: Base classes like `StelleScreen` to integrate MVI with Jetpack/JetBrains
+  Compose.
+- **`mvi-koin`**: Integration classes for injecting ViewModels and their children using Koin.
+- **`mvi-compose-koin`**: A convenience module that combines Compose and Koin integrations.
+- **`usecase`**: Provides the `StelleUseCase` interface for business logic.
+- **`dispatchers`**: Provides a standardized set of `CoroutineDispatchers` for KMP.
 
 ## Current Version
 
