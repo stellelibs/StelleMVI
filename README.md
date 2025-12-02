@@ -75,7 +75,27 @@ sourceSets {
 In the sample folder you can find a sample project showing how to use Stelle MVI in a Kotlin
 Multiplatform project with Compose Multiplatform.
 
-[Wiki](https://github.com/stellelibs/StelleMVI/wiki)
+1. **[The MVI Pattern](https://github.com/stellelibs/StelleMVI/wiki/The-MVI-Pattern)**  
+   *Start here to understand the core principles of the Model-View-Intent architecture and how
+   StelleMVI implements it.*
+
+2. **[Basic Tutorial (No Dependency Injection)](https://github.com/stellelibs/StelleMVI/wiki/Basic-Tutorial)**  
+   *Learn the fundamentals of StelleMVI by building a feature without any dependency injection
+   framework.*
+
+3. **[Koin Integration Guide](https://github.com/stellelibs/StelleMVI/wiki/Koin-Guide)**  
+   *A dedicated guide to integrating StelleMVI with Koin for robust dependency injection in your KMP
+   project.*
+
+4. **[Advanced Guide: Parent-Child ViewModels](https://github.com/stellelibs/StelleMVI/wiki/Advanced-Guide:Parent-Child-ViewModels)**  
+   *Explore the powerful Parent-Child pattern for managing complexity in large screens.*
+
+5. **[UseCase Module Guide](https://github.com/stellelibs/StelleMVI/wiki/UseCase-Module-Guide-)**  
+   *Learn how to use the `usecase` module to structure your business logic cleanly and effectively.*
+
+6. **[Dispatchers Module Guide](https://github.com/stellelibs/StelleMVI/wiki/Dispatchers-Module-Guide-)** 
+   *Understand the `dispatchers` module and how it provides a consistent way to manage coroutine
+   dispatchers across all platforms.*
 
 
 [logo]: art/logoh3.png
