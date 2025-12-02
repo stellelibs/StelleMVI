@@ -75,6 +75,8 @@ sourceSets {
 In the sample folder you can find a sample project showing how to use Stelle MVI in a Kotlin
 Multiplatform project with Compose Multiplatform.
 
+[Wiki](https://github.com/stellelibs/StelleMVI/wiki)
+
 
 [logo]: art/logoh3.png
 
