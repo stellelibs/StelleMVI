@@ -90,10 +90,10 @@ Multiplatform project with Compose Multiplatform.
 4. **[Advanced Guide: Parent-Child ViewModels](https://github.com/stellelibs/StelleMVI/wiki/Advanced-Guide:Parent-Child-ViewModels)**  
    *Explore the powerful Parent-Child pattern for managing complexity in large screens.*
 
-5. **[UseCase Module Guide](https://github.com/stellelibs/StelleMVI/wiki/UseCase-Module-Guide-)**  
+5. **[UseCase Module Guide](https://github.com/stellelibs/StelleMVI/wiki/UseCase-Module-Guide)**  
    *Learn how to use the `usecase` module to structure your business logic cleanly and effectively.*
 
-6. **[Dispatchers Module Guide](https://github.com/stellelibs/StelleMVI/wiki/Dispatchers-Module-Guide-)** 
+6. **[Dispatchers Module Guide](https://github.com/stellelibs/StelleMVI/wiki/Dispatchers-Module-Guide)** 
    *Understand the `dispatchers` module and how it provides a consistent way to manage coroutine
    dispatchers across all platforms.*
 
