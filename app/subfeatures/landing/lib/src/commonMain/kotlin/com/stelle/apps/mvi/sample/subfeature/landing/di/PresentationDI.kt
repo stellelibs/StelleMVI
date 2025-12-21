@@ -1,8 +1,6 @@
 package com.stelle.apps.mvi.sample.subfeature.landing.di
 
 import com.stelle.apps.mvi.sample.subfeature.landing.presentation.LandingChildViewModelContainer
-import com.stelle.apps.mvi.sample.subfeature.landing.presentation.LandingData
-import com.stelle.apps.mvi.sample.subfeature.landing.presentation.LandingReducer
 import com.stelle.apps.mvi.sample.subfeature.landing.presentation.LandingState
 import com.stelle.apps.mvi.sample.subfeature.landing.presentation.LandingViewModel
 import com.stelle.apps.mvi.sample.subfeature.landing.presentation.list.LandingListReducer
@@ -15,8 +13,7 @@ import org.koin.dsl.module
 internal fun presentationModule() = module {
     /* No Koin scope or binding is required for `LandingViewModel` because `LandingScreen`
      overrides the `viewModelClass` property, allowing Koin to resolve it directly.*/
-    factory { LandingData() }
-    factoryOf(::LandingReducer)
+    factory { LandingState() }
     viewModelOf(::LandingViewModel)
 
 
