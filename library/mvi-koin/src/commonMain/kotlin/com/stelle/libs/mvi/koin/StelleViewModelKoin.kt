@@ -21,15 +21,30 @@ import org.koin.mp.KoinPlatform.getKoin
  *
  * @param State The type of the state managed by this ViewModel.
  * @param Event The type of the events this ViewModel can process.
- * @constructor
- *
- *  @param data The [StelleData] instance that holds the state and effect flows.
- * @param reducer The [StelleReducer] for this ViewModel's specific events.
+ * @param data The [StelleData] instance that holds the state and effect flows.
+ * @param reducer The [StelleReducer] for this ViewModel's specific events. Defaults to a no-op reducer if not provided.
  */
 abstract class StelleViewModelKoin<State : StelleState, Event : StelleEvent>(
     data: StelleData<State>,
-    reducer: StelleReducer<State, Event>
+    reducer: StelleReducer<State, Event> = object : StelleReducer<State, Event> {}
 ) : StelleViewModel<State, Event>(data, reducer) {
+
+    /**
+     * Convenience constructor that creates a default [StelleData] implementation.
+     *
+     * Use this constructor when you don't need a custom [StelleData] implementation and just want
+     * to provide the initial state.
+     *
+     * @param initialState The initial state of the ViewModel.
+     * @param reducer The [StelleReducer] for this ViewModel's specific events. Defaults to a no-op reducer if not provided.
+     */
+    constructor(
+        initialState: State,
+        reducer: StelleReducer<State, Event> = object : StelleReducer<State, Event> {}
+    ) : this(
+        object : StelleData<State>(initialState) {},
+        reducer
+    )
 
     private fun getScope() = getKoin().getOrCreateScope(
         scopeId = this::class.getFullName(),
