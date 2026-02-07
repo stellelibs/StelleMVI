@@ -4,16 +4,16 @@ import com.stelle.libs.mvi.event.StelleEffect
 import com.stelle.libs.mvi.event.StelleEvent
 
 /**
- * A ViewModel that operates as a child of a other [StelleParentViewModel].
+ * A ViewModel that operates as a child of a [StelleParentViewModel].
  * It shares the same [StelleState] but can handle its own logic and events independently.
  * This is useful for breaking down complex screens into smaller, more manageable components.
  *
  * @param State The type of the shared state, which must extend [StelleState].
  * @param Event The type of events this child ViewModel can process.
- * @param reducer The [StelleReducer] for this child's specific events.
+ * @param reducer The [StelleReducer] for this child's specific events. Defaults to a no-op reducer if not provided.
  */
 abstract class StelleChildViewModel<State : StelleState, Event : StelleEvent>(
-    reducer: StelleReducer<State, Event>
+    reducer: StelleReducer<State, Event> = object : StelleReducer<State, Event> {}
 ) : StelleParentViewModel<State, Event>(reducer) {
     private var parent: StelleParentViewModel<State, *>? = null
 
