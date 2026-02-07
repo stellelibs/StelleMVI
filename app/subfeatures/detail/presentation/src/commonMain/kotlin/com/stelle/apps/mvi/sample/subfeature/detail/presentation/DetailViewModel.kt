@@ -8,7 +8,11 @@ import com.stelle.libs.mvi.event.StelleEvent
 import com.stelle.libs.mvi.event.StelleIntent
 
 class DetailViewModel(data: DetailData, reducer: DetailReducer, dispatchers: StelleDispatchers) :
-    BaseViewModel<DetailState, StelleEvent>(data, reducer, dispatchers) {
+    BaseViewModel<DetailState, StelleEvent>(
+        data = data,
+        reducer = reducer,
+        dispatchers = dispatchers
+    ) {
 
     override fun handleIntent(intent: StelleIntent) = when (intent) {
         is DetailIntent -> handleIntentDetail(intent)

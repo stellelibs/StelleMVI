@@ -20,10 +20,10 @@ import org.koin.mp.KoinPlatform.getKoin
  *
  * @param State The type of the shared state, which must extend [StelleState].
  * @param Event The type of events this child ViewModel can process.
- * @property reducer The [StelleReducer] for this child's specific events.
+ * @param reducer The [StelleReducer] for this child's specific events. Defaults to a no-op reducer if not provided.
  */
 abstract class StelleChildViewModelKoin<State : StelleState, Event : StelleEvent>(
-    reducer: StelleReducer<State, Event>
+    reducer: StelleReducer<State, Event> = object : StelleReducer<State, Event> {}
 ) : StelleChildViewModel<State, Event>(reducer) {
 
     private fun getScope() = getKoin().getOrCreateScope(
