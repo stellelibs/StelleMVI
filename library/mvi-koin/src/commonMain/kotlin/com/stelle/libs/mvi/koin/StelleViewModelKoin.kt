@@ -6,11 +6,9 @@ import com.stelle.libs.mvi.StelleReducer
 import com.stelle.libs.mvi.StelleState
 import com.stelle.libs.mvi.StelleViewModel
 import com.stelle.libs.mvi.event.StelleEvent
+import com.stelle.libs.mvi.koin.di.createStelleScope
 import com.stelle.libs.mvi.koin.di.injectChildrenContainer
-import org.koin.core.qualifier.TypeQualifier
 import org.koin.core.scope.Scope
-import org.koin.ext.getFullName
-import org.koin.mp.KoinPlatform.getKoin
 
 /**
  * An abstract [StelleViewModel] that integrates with Koin for automatic dependency injection
@@ -46,11 +44,7 @@ abstract class StelleViewModelKoin<State : StelleState, Event : StelleEvent>(
         reducer
     )
 
-    private fun getScope() = getKoin().getOrCreateScope(
-        scopeId = this::class.getFullName(),
-        qualifier = TypeQualifier(this::class),
-        source = this
-    )
+    private val scope: Scope = createStelleScope(this::class, this)
 
     /**
      * Overridden to automatically inject the [StelleChildViewModelContainer] from this
@@ -65,10 +59,18 @@ abstract class StelleViewModelKoin<State : StelleState, Event : StelleEvent>(
      * ```
      */
     override val children: StelleChildViewModelContainer<State>? =
-        getScope().injectChildrenContainer()
+        scope.injectChildrenContainer()
 
     init {
         // Automatically establishes the parent-child relationship upon creation.
         setParents()
+    }
+
+    /**
+     * Closes the dedicated Koin scope when the ViewModel is cleared, preventing scope leaks.
+     */
+    override fun onCleared() {
+        super.onCleared()
+        scope.close()
     }
 }
