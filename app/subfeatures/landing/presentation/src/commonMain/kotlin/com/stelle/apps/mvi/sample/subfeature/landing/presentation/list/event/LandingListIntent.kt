@@ -5,7 +5,7 @@ import com.stelle.libs.mvi.event.StelleIntent
 
 sealed class LandingListIntent : StelleIntent {
     data object LoadMode : LandingListIntent()
-    object RechargePokemons : LandingListIntent()
+    data object RechargePokemons : LandingListIntent()
 
     data class RechargeDetail(val name: String) : LandingListIntent()
     data class OnClickDetail(val details: PokemonDetail) : LandingListIntent()
