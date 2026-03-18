@@ -27,34 +27,34 @@ class LandingListViewModel(
 
     private fun getPokemons() {
         if (endListPokemon) return
-        sendEvent(LandingListEvent.onPokemonLoading)
+        sendEvent(LandingListEvent.PokemonLoading)
         executeUseCase(
             getPokemonUseCase,
             GetPokemonUseCase.Params(limit = pageSize, offset = offset),
             onSuccess = { pokemons ->
                 offset += pageSize
                 endListPokemon = pokemons.count < pageSize
-                sendEvent(LandingListEvent.onPokemonLoaded(pokemons))
-                if (endListPokemon) sendEvent(LandingListEvent.onFinishPagination)
+                sendEvent(LandingListEvent.PokemonLoaded(pokemons))
+                if (endListPokemon) sendEvent(LandingListEvent.FinishPagination)
                 pokemons.results.forEach { pokemon ->
                     getPokemonDetail(pokemon.name)
                 }
 
             }, onError = {
-                sendEvent(LandingListEvent.onPokemonLoadedError)
+                sendEvent(LandingListEvent.PokemonLoadedError)
             }
         )
     }
 
     private fun getPokemonDetail(name: String) {
-        sendEvent(LandingListEvent.onPokemonDetailClearError(name))
+        sendEvent(LandingListEvent.PokemonDetailClearError(name))
         executeUseCase(
             getPokemonDetailUseCase,
             GetPokemonDetailUseCase.Params(nameOrId = name),
             onSuccess = { pokemonDetail ->
-                sendEvent(LandingListEvent.onPokemonDetailLoaded(pokemonDetail))
+                sendEvent(LandingListEvent.PokemonDetailLoaded(pokemonDetail))
             }, onError = {
-                sendEvent(LandingListEvent.onPokemonDetailError(name))
+                sendEvent(LandingListEvent.PokemonDetailError(name))
 
             }
         )
