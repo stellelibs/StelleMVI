@@ -26,7 +26,7 @@ abstract class StelleChildViewModelKoin<State : StelleState, Event : StelleEvent
     reducer: StelleReducer<State, Event> = object : StelleReducer<State, Event> {}
 ) : StelleChildViewModel<State, Event>(reducer) {
 
-    private fun getScope() = getKoin().getOrCreateScope(
+    private val scope: Scope = getKoin().getOrCreateScope(
         scopeId = this::class.getFullName(),
         qualifier = TypeQualifier(this::class),
         source = this
@@ -37,5 +37,13 @@ abstract class StelleChildViewModelKoin<State : StelleState, Event : StelleEvent
      * own children, using its dedicated Koin scope.
      */
     override val children: StelleChildViewModelContainer<State>? =
-        getScope().injectChildrenContainer()
+        scope.injectChildrenContainer()
+
+    /**
+     * Closes the dedicated Koin scope when the ViewModel is cleared, preventing scope leaks.
+     */
+    override fun onCleared() {
+        super.onCleared()
+        scope.close()
+    }
 }
