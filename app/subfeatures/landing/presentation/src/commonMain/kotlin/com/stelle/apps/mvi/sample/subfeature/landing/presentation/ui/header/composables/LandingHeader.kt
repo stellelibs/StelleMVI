@@ -10,16 +10,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import org.jetbrains.compose.resources.stringResource
+import stellemvi.app.subfeatures.landing.presentation.generated.resources.Res
+import stellemvi.app.subfeatures.landing.presentation.generated.resources.pokemon_loaded_count
+import stellemvi.app.subfeatures.landing.presentation.generated.resources.pokedex_title
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LandingHeader(pokemonCount: Int) {
     TopAppBar(
-        title = { Text("Pokédex") },
+        title = { Text(stringResource(Res.string.pokedex_title)) },
         actions = {
-            // Muestra el contador de Pokémon cargados en el header
             Text(
-                text = "Cargados: $pokemonCount",
+                text = stringResource(Res.string.pokemon_loaded_count, pokemonCount),
                 modifier = Modifier.padding(end = 16.dp),
                 fontWeight = FontWeight.Bold
             )
