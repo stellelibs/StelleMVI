@@ -9,7 +9,7 @@ class LandingListReducer : StelleReducer<LandingState, LandingListEvent> {
         previousState.copy(landingListState = reduce(previousState.landingListState, event))
 
     private fun reduce(previousState: LandingListState, event: LandingListEvent) = when (event) {
-        is LandingListEvent.onPokemonLoaded -> {
+        is LandingListEvent.PokemonLoaded -> {
             previousState.copy(
                 listPokemons = previousState.listPokemons + event.pokemons.results,
                 loading = false,
@@ -17,28 +17,28 @@ class LandingListReducer : StelleReducer<LandingState, LandingListEvent> {
             )
         }
 
-        is LandingListEvent.onPokemonDetailLoaded -> {
+        is LandingListEvent.PokemonDetailLoaded -> {
             previousState.copy(
                 pokemonsDetail = previousState.pokemonsDetail + (event.pokemon.name to event.pokemon)
             )
 
         }
 
-        is LandingListEvent.onPokemonDetailError -> previousState.copy(
+        is LandingListEvent.PokemonDetailError -> previousState.copy(
             pokemonsError = previousState.pokemonsError + event.name
         )
 
-        is LandingListEvent.onPokemonLoadedError -> previousState.copy(
+        is LandingListEvent.PokemonLoadedError -> previousState.copy(
             isErrorPokemon = true
         )
 
-        is LandingListEvent.onPokemonLoading -> previousState.copy(
+        is LandingListEvent.PokemonLoading -> previousState.copy(
             loading = true,
             isErrorPokemon = false
         )
 
-        is LandingListEvent.onFinishPagination -> previousState.copy(finishedPagination = true)
-        is LandingListEvent.onPokemonDetailClearError -> previousState.copy(
+        is LandingListEvent.FinishPagination -> previousState.copy(finishedPagination = true)
+        is LandingListEvent.PokemonDetailClearError -> previousState.copy(
             pokemonsError = previousState.pokemonsError.filter { it != event.name }
         )
     }
