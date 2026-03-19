@@ -16,7 +16,7 @@ import kotlin.reflect.KClass
  * @param source Optional source object to attach to the scope (typically the ViewModel instance).
  * @return The existing or newly created [Scope].
  */
-internal fun <T : Any> createStelleScope(kClass: KClass<T>, source: T): Scope =
+internal fun <T : Any> createStelleScope(kClass: KClass<out T>, source: T): Scope =
     getKoin().getOrCreateScope(
         scopeId = kClass.getFullName(),
         qualifier = TypeQualifier(kClass),
