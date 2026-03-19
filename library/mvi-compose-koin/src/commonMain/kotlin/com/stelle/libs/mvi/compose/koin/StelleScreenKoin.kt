@@ -1,6 +1,8 @@
 package com.stelle.libs.mvi.compose.koin
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
@@ -40,6 +42,12 @@ abstract class StelleScreenKoin<State : StelleState, ViewModel : StelleViewModel
     StelleScreen<State, ViewModel>(onEffectFromParent = onEffectFromParent) {
 
     /**
+     * The active Koin scope for the current composition. Set once inside [Show] via [remember]
+     * and consumed by [createViewModel]. Null outside of composition.
+     */
+    private var activeScope: Scope? = null
+
+    /**
      * Overriding this property is an optional configuration that allows you to specify the concrete
      * [ViewModel] class to be injected.
      *
@@ -61,6 +69,28 @@ abstract class StelleScreenKoin<State : StelleState, ViewModel : StelleViewModel
     open fun generateViewModelKey(): String = this::class.getFullName()
 
     /**
+     * Entry point that wires the Koin scope lifecycle to the composable lifecycle.
+     *
+     * A single [Scope] instance is created once per composition entry via [remember] and stored
+     * in [activeScope] so that [createViewModel] always resolves the ViewModel from that same
+     * scope instance. A [DisposableEffect] closes the scope when the composable leaves the
+     * composition tree, ensuring that the next entry creates a fresh scope and a fresh ViewModel
+     * with clean initial state.
+     */
+    @Composable
+    override fun Show() {
+        val scope = remember { getScope() }
+        activeScope = scope
+        DisposableEffect(scope) {
+            onDispose {
+                activeScope = null
+                runCatching { scope.close() }
+            }
+        }
+        super.Show()
+    }
+
+    /**
      * A final implementation that creates the ViewModel by calling [diViewModel].
      * Subclasses should not override this; they should provide the ViewModel's class
      * via [viewModelClass] instead.
@@ -70,14 +100,18 @@ abstract class StelleScreenKoin<State : StelleState, ViewModel : StelleViewModel
         viewModelStoreOwner = LocalViewModelStoreOwner.current
             ?: error("No ViewModelStoreOwner was provided via LocalViewModelStoreOwner"),
     )
-        ?: throw Exception("problem injecting viewmodel")
+        ?: throw IllegalStateException(
+            "Could not inject ViewModel for screen ${this::class.getFullName()}. " +
+                "Make sure a Koin binding exists either via viewModelClass or a scope<> definition."
+        )
 
     /**
      * Resolves and provides the [ViewModel] instance from Koin.
      *
-     * It uses [viewModelClass] if provided for a direct, type-safe resolution.
-     * Otherwise, it attempts to resolve `StelleViewModel::class` from the Koin
-     * scope associated with this screen, requiring a `bind` in the DI module.
+     * Uses [activeScope] when available (i.e., during composition started from [Show]) so that
+     * the ViewModel is always resolved from the same scope instance that [DisposableEffect] will
+     * close on disposal. Falls back to [getScope] only when called outside of [Show] (e.g., from
+     * subclass overrides that invoke [diViewModel] directly).
      *
      * @return The resolved [ViewModel] instance, or `null` if it cannot be resolved.
      */
@@ -88,7 +122,7 @@ abstract class StelleScreenKoin<State : StelleState, ViewModel : StelleViewModel
         viewModelStoreOwner: ViewModelStoreOwner,
         key: String? = generateViewModelKey(),
         extras: CreationExtras = defaultExtras(viewModelStoreOwner),
-        scope: Scope = getScope(),
+        scope: Scope = activeScope ?: getScope(),
         parameters: ParametersDefinition? = null,
     ): ViewModel? {
         return resolveViewModel(
@@ -107,6 +141,8 @@ abstract class StelleScreenKoin<State : StelleState, ViewModel : StelleViewModel
      *
      * This scope is used to resolve dependencies that are specific to this screen's lifecycle.
      * By default, the scope is identified by the fully qualified name of the screen class.
+     * Prefer using this via the [Show] lifecycle rather than calling it directly, so that the
+     * returned scope is properly closed when the screen leaves composition.
      *
      * @return The Koin [Scope] for this screen.
      */
