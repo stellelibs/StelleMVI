@@ -1,9 +1,7 @@
 <resources>
-
-
-    <string name="error_charging_list"> Error charging pokemons</string>
-
-    <string name="retry"> retry</string>
-
-    <string name="error_charging_detail"> Details could not be loaded.</string>
+    <string name="error_charging_list">Error loading Pokémon</string>
+    <string name="retry">Retry</string>
+    <string name="error_charging_detail">Details could not be loaded.</string>
+    <string name="pokedex_title">Pokédex</string>
+    <string name="pokemon_loaded_count">Loaded: %1$s</string>
 </resources>
