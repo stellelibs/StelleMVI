@@ -2,6 +2,9 @@ package com.stelle.libs.mvi
 
 import com.stelle.libs.mvi.event.StelleEffect
 import com.stelle.libs.mvi.event.StelleEvent
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.getAndUpdate
+import kotlinx.coroutines.flow.update
 
 /**
  * A ViewModel that operates as a child of a [StelleParentViewModel].
@@ -17,8 +20,8 @@ abstract class StelleChildViewModel<State : StelleState, Event : StelleEvent>(
 ) : StelleParentViewModel<State, Event>(reducer) {
     private var parent: StelleParentViewModel<State, *>? = null
 
-    private val delayedEffects = mutableListOf<StelleEffect>()
-    private val delayedEvents = mutableListOf<Event>()
+    private val delayedEffects = MutableStateFlow<List<StelleEffect>>(emptyList())
+    private val delayedEvents = MutableStateFlow<List<Event>>(emptyList())
 
     override val data
         get() =
@@ -36,13 +39,13 @@ abstract class StelleChildViewModel<State : StelleState, Event : StelleEvent>(
     }
 
     private fun sendDelayedEvents() {
-        delayedEvents.forEach { super.sendEvent(it) }
-        delayedEvents.clear()
+        val pending = delayedEvents.getAndUpdate { emptyList() }
+        pending.forEach { super.sendEvent(it) }
     }
 
     private fun sendDelayedEffects() {
-        delayedEffects.forEach { super.sendEffect(it) }
-        delayedEffects.clear()
+        val pending = delayedEffects.getAndUpdate { emptyList() }
+        pending.forEach { super.sendEffect(it) }
     }
 
     internal fun setParent(parentViewModel: StelleParentViewModel<State, *>) {
@@ -56,7 +59,7 @@ abstract class StelleChildViewModel<State : StelleState, Event : StelleEvent>(
      */
     override fun sendEvent(event: Event) {
         if (parent == null) {
-            delayedEvents.add(event)
+            delayedEvents.update { it + event }
             return
         }
         super.sendEvent(event)
@@ -68,7 +71,7 @@ abstract class StelleChildViewModel<State : StelleState, Event : StelleEvent>(
      */
     override fun sendEffect(effect: StelleEffect) {
         if (parent == null) {
-            delayedEffects.add(effect)
+            delayedEffects.update { it + effect }
             return
         }
         super.sendEffect(effect)
