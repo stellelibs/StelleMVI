@@ -13,6 +13,9 @@ import com.stelle.libs.mvi.StelleViewModel
 import com.stelle.libs.mvi.event.StelleEffect
 import com.stelle.libs.mvi.event.StelleIntent
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.getAndUpdate
+import kotlinx.coroutines.flow.update
 
 /**
  * A base class for creating a screen in Compose that follows the MVI pattern.
@@ -25,7 +28,7 @@ import kotlinx.coroutines.flow.Flow
 abstract class StelleScreen<S : StelleState, V : StelleViewModel<S, *>>(val onEffectFromParent: ((effect: StelleEffect) -> Unit)? = null) {
     /** The ViewModel instance associated with this screen, available to subclasses. */
     protected lateinit var viewModel: V
-    private val delayedIntent = mutableListOf<StelleIntent>()
+    private val delayedIntents = MutableStateFlow<List<StelleIntent>>(emptyList())
 
     /**
      * The main entry point for rendering the screen.
@@ -37,7 +40,10 @@ abstract class StelleScreen<S : StelleState, V : StelleViewModel<S, *>>(val onEf
         sendDelayedIntents()
         val state by viewModel.state.collectAsStateWithLifecycle()
         val effects = rememberFlowWithLifecycle(viewModel.effect)
-        Content(state, ::sendIntent)
+        val intentHandler = remember<(StelleIntent) -> Unit>(viewModel) {
+            { intent -> viewModel.handleIntent(intent) }
+        }
+        Content(state, intentHandler)
         LaunchedEffect(effects) {
             effects.collect { effect ->
                 onEffect(effect)
@@ -80,17 +86,15 @@ abstract class StelleScreen<S : StelleState, V : StelleViewModel<S, *>>(val onEf
      */
     protected fun sendIntent(intent: StelleIntent) {
         if (!this::viewModel.isInitialized) {
-            delayedIntent.add(intent)
+            delayedIntents.update { it + intent }
             return
         }
         viewModel.handleIntent(intent)
     }
 
     private fun sendDelayedIntents() {
-        delayedIntent.forEach {
-            viewModel.handleIntent(it)
-        }
-        delayedIntent.clear()
+        val pending = delayedIntents.getAndUpdate { emptyList() }
+        pending.forEach { viewModel.handleIntent(it) }
     }
 }
 
