@@ -15,22 +15,24 @@ androidx-test-junit = "1.3.0"
 compose-multiplatform = "1.9.3"
 junit = "4.13.2"
 kotlin = "2.2.21"
-kotlin-jvm = "2.1.21"
+# kotlin-jvm is used by build-logic only; keep in sync with kotlin when upgrading
+kotlin-jvm = "2.2.21"
 kotlin-ksp = "2.2.20-2.0.3"
-kotlinGradlePlugin = "2.1.0"
+# kotlinGradlePlugin should match kotlin version; used as the kotlin-gradle-plugin library version
+kotlinGradlePlugin = "2.2.21"
 kotlinx-datetime = "0.7.1"
 kotlinSerialization = "1.9.0"
 navigation-compose = "2.9.1"
 composeHotReload = "1.0.0-rc04"
 
 koin-bom = "4.1.1"
-jetbrainsKotlinJvm = "2.2.21"
+# jetbrainsKotlinJvm is unused; kept for reference, use kotlin-jvm plugin entry instead
 kotlin-serializable = "2.2.21"
 ktor = "3.3.2"
 slf4j = "2.0.17"
 coroutines = "1.10.2"
 napier = "2.7.1"
-google-ksp = "2.1.21-2.0.2"
+# google-ksp is unused; the canonical KSP plugin is declared under ksp below
 vanniktech-publish = "0.32.0"
 kgx = "0.1.12"
 jdk-toolchain = "17"
@@ -87,15 +89,11 @@ androidLibrary = { id = "com.android.library", version.ref = "agp" }
 composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }
 composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
-jetbrainsKotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlinSerializable = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin-serializable" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "kotlin-ksp" }
-kotlinAndroid2 = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kmpTargetsPlugin = { id = "com.stelle.plugins.KmpTargetsPlugin" }
 publish = { id = "com.stelle.plugins.Publish" }
-
-google-ksp = { id = "com.google.devtools.ksp", version.ref = "google-ksp" }
 composeHotReload = { id = "org.jetbrains.compose.hot-reload", version.ref = "composeHotReload" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin-jvm" }
 
