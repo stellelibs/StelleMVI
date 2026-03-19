@@ -81,6 +81,6 @@ abstract class StelleParentViewModel<State : StelleState, Event : StelleEvent>(
      * @param event The [StelleEvent] to be processed.
      */
     protected open fun sendEvent(event: Event) {
-        data.updateState(reducer.reduce(data.state.value, event))
+        data.updateState { currentState -> reducer.reduce(currentState, event) }
     }
 }
