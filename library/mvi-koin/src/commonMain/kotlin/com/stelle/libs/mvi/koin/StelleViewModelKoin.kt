@@ -44,7 +44,7 @@ abstract class StelleViewModelKoin<State : StelleState, Event : StelleEvent>(
         reducer
     )
 
-    private val scope: Scope = createStelleScope(this::class, this)
+    protected open fun getScope(): Scope = createStelleScope(this::class, this)
 
     /**
      * Overridden to automatically inject the [StelleChildViewModelContainer] from this
@@ -59,7 +59,7 @@ abstract class StelleViewModelKoin<State : StelleState, Event : StelleEvent>(
      * ```
      */
     override val children: StelleChildViewModelContainer<State>? =
-        scope.injectChildrenContainer()
+        getScope().injectChildrenContainer()
 
     init {
         // Automatically establishes the parent-child relationship upon creation.
@@ -71,6 +71,6 @@ abstract class StelleViewModelKoin<State : StelleState, Event : StelleEvent>(
      */
     override fun onCleared() {
         super.onCleared()
-        scope.close()
+        getScope().close()
     }
 }
