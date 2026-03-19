@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.update
 
 /**
  * A base class responsible for managing the state and side effects within the MVI architecture.
@@ -31,12 +32,12 @@ abstract class StelleData<State : StelleState>(
 
 
     internal fun updateState(block: (State) -> State) {
-        _state.value = block(state.value)
+        _state.update(block)
     }
 
 
     internal fun updateState(newState: State) {
-        _state.value = newState
+        _state.update { newState }
     }
 
 
