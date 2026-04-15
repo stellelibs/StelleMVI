@@ -97,6 +97,12 @@ Multiplatform project with Compose Multiplatform.
    *Understand the `dispatchers` module and how it provides a consistent way to manage coroutine
    dispatchers across all platforms.*
 
+## Migration
+
+Upgrading from an earlier version? See the **[Migration Guide](MIGRATION.md)** for breaking
+changes and step-by-step migration instructions (including the move from `StelleResult` to
+`kotlin.Result`).
+
 
 [logo]: art/logoh3.png
 

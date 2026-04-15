@@ -2,7 +2,6 @@ package com.stelle.libs.usecase
 
 import com.stelle.libs.dispatchers.IODispatcher
 import com.stelle.libs.dispatchers.StelleDispatchers
-import com.stelle.libs.usecase.result.fold
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -37,9 +36,8 @@ fun <Params, R> StelleUseCase<Params, R>.execute(
     onSuccess,
     onError,
     dispatchers.ui,
-    dispatchers.io,
-
-    )
+    dispatchers.io
+)
 
 /**
  * Launches a coroutine in the given [scope] to execute the use case and deliver the result.

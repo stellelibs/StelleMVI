@@ -2,7 +2,6 @@ package com.stelle.apps.mvi.sample.subfeature.landing.data.source
 
 import com.stelle.apps.mvi.sample.subfeature.common.domain.model.PokemonDetail
 import com.stelle.apps.mvi.sample.subfeature.landing.domain.model.Pokemons
-import com.stelle.libs.usecase.result.StelleResult
 
 /** Interface defining remote data source operations for fetching Pokemon data. */
 interface PokeRemoteSource {
@@ -12,12 +11,12 @@ interface PokeRemoteSource {
      * @param offset The starting index from which to retrieve Pokemons. Default is 0.
      * @return A [Pokemons] containing the list of Pokemons and pagination info.
      */
-    suspend fun getPokemons(limit: Int = 20, offset: Int = 0): StelleResult<Pokemons>
+    suspend fun getPokemons(limit: Int = 20, offset: Int = 0): Result<Pokemons>
 
     /** Fetch detailed information about a specific Pokemon by its name or ID.
      *
      * @param nameOrId The name or ID of the Pokemon to retrieve details for.
      * @return A [PokemonDetail containing detailed information about the specified Pokemon.
      */
-    suspend fun getPokemonDetail(nameOrId: String): StelleResult<PokemonDetail>
+    suspend fun getPokemonDetail(nameOrId: String): Result<PokemonDetail>
 }
