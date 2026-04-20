@@ -4,7 +4,6 @@ import com.stelle.apps.mvi.sample.subfeature.common.domain.model.PokemonDetail
 import com.stelle.apps.mvi.sample.subfeature.landing.data.source.api.PokeApiService
 import com.stelle.apps.mvi.sample.subfeature.landing.data.source.mapper.PokeRemoteMapper
 import com.stelle.apps.mvi.sample.subfeature.landing.domain.model.Pokemons
-import com.stelle.libs.usecase.result.StelleResult
 
 
 class PokeRemoteSourceImpl(private val api: PokeApiService, private val mapper: PokeRemoteMapper) :
@@ -12,21 +11,21 @@ class PokeRemoteSourceImpl(private val api: PokeApiService, private val mapper: 
     override suspend fun getPokemons(
         limit: Int,
         offset: Int
-    ): StelleResult<Pokemons> {
+    ): Result<Pokemons> {
         try {
             val response = api.getPokemons(limit, offset)
-            return StelleResult.Success(mapper.toModel(response))
+            return Result.success(mapper.toModel(response))
         } catch (e: Exception) {
-            return StelleResult.Error(e)
+            return Result.failure(e)
         }
     }
 
-    override suspend fun getPokemonDetail(nameOrId: String): StelleResult<PokemonDetail> {
+    override suspend fun getPokemonDetail(nameOrId: String): Result<PokemonDetail> {
         try {
             val response = api.getPokemonDetail(nameOrId)
-            return StelleResult.Success(mapper.toModel(response))
+            return Result.success(mapper.toModel(response))
         } catch (e: Exception) {
-            return StelleResult.Error(e)
+            return Result.failure(e)
         }
     }
 
